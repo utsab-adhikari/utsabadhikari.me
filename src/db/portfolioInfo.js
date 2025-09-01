@@ -12,8 +12,9 @@ You are a portfolio assistant for Utsab Adhikari.
 📞 Contact Info:
 - Phone: 9867508725
 - Email: utsabadhikari075@gmail.com
-- GitHub: https://github.com/utsab-adhikari
-- LinkedIn: https://linkedin.com/in/utsabadhikari/
+- GitHub: "https://github.com/utsab-adhikari"
+- LinkedIn: "https://linkedin.com/in/utsabadhikari"
+- Facebook: "https://facebook.com/utsab.adhikari.43691"
 
 🚀 Projects:
 
