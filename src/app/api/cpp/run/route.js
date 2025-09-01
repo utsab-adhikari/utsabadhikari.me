@@ -1,52 +1,38 @@
-import { exec } from "child_process";
-import fs from "fs";
-import path from "path";
+// app/api/cpp/run/route.js
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     const { code } = await req.json();
+    if (!code) {
+      return NextResponse.json({ status: "error", error: "No code provided" }, { status: 400 });
+    }
 
-    // Temporary file path
-    const tmpDir = path.join(process.cwd(), "tmp");
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-
-    const filePath = path.join(tmpDir, `temp.cpp`);
-    const exePath = path.join(tmpDir, `temp.exe`);
-
-    // Save the code to a temporary file
-    fs.writeFileSync(filePath, code, "utf8");
-
-    // Compile C++ code
-    const compile = await new Promise((resolve, reject) => {
-      exec(`g++ "${filePath}" -o "${exePath}"`, (err, stdout, stderr) => {
-        if (err) reject(stderr || err.message);
-        else resolve(stdout);
-      });
+    // Judge0 API endpoint
+    const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-RapidAPI-Key": process.env.JUDGE0_API_KEY,
+        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+      },
+      body: JSON.stringify({
+        source_code: code,
+        language_id: 54, // C++17
+      }),
     });
 
-    // Run the compiled program
-    const output = await new Promise((resolve, reject) => {
-      exec(`"${exePath}"`, { timeout: 5000 }, (err, stdout, stderr) => {
-        if (err) reject(stderr || err.message);
-        else resolve(stdout);
-      });
-    });
+    const result = await response.json();
 
-    return new Response(
-      JSON.stringify({ status: "success", output }),
-      { status: 200 }
-    );
+    // Judge0 API returns stdout, stderr, compile_output
+    let output = "";
+    if (result.stdout) output = result.stdout;
+    else if (result.compile_output) output = `Compile error:\n${result.compile_output}`;
+    else if (result.stderr) output = `Runtime error:\n${result.stderr}`;
+    else output = "No output";
 
+    return NextResponse.json({ status: "success", output });
   } catch (err) {
-    return new Response(
-      JSON.stringify({ status: "error", error: err.toString() }),
-      { status: 500 }
-    );
-  } finally {
-    // Cleanup temp files
-    try {
-      fs.unlinkSync(path.join(process.cwd(), "tmp", "temp.cpp"));
-      fs.unlinkSync(path.join(process.cwd(), "tmp", "temp.exe"));
-    } catch {}
+    return NextResponse.json({ status: "error", error: err.message }, { status: 500 });
   }
 }
