@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
-import { FaWhatsapp, FaDiscord } from "react-icons/fa";
+import { FaWhatsapp, FaDiscord, FaUser } from "react-icons/fa";
 
 export default function Hero() {
   return (
@@ -12,14 +12,9 @@ export default function Hero() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="relative w-32 h-32 rounded-full overflow-hidden mb-5 border-2 border-[#30363d]"
+          className="relative w-32 h-32 text-[#238636] p-1 rounded-full overflow-hidden mb-5 border-2 border-[#30363d]"
         >
-          <Image
-            src="/profile.jpg"
-            alt="Utsab Adhikari"
-            fill
-            className="object-cover"
-          />
+          <FaUser size="w-fit"/>
         </motion.div>
 
         <h1 className="text-xl font-semibold text-[#f0f6fc] mb-1">Utsab Adhikari</h1>

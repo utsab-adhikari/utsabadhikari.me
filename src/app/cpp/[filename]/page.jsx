@@ -4,15 +4,17 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FiCopy, FiPlay, FiClock, FiArrowLeft, FiEdit } from "react-icons/fi";
 import { Editor } from "@monaco-editor/react";
+import { useSession } from "next-auth/react";
 
 export default function CppFileView() {
   const { filename } = useParams();
+  const { data: session, status } = useSession();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true); // Set to true for admin, adjust according to session
+  const [isAdmin, setIsAdmin] = useState(false); // Set to true for admin, adjust according to session
 
   useEffect(() => {
     fetch(`/api/cpp/${filename}`)
@@ -21,6 +23,8 @@ export default function CppFileView() {
         setFile(data);
         setLoading(false);
       });
+
+    setIsAdmin(session?.user?.role === "admin");
   }, [filename]);
 
   const copyCode = () => {

@@ -10,6 +10,7 @@ import Contact from "@/components/home/Contact";
 import Articles from "@/components/home/Articles";
 import Loader from "@/components/Loader";
 import Footer from "@/components/home/Footer";
+import Chatbot from "@/components/home/Chatbot";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +36,7 @@ export default function Home() {
           >
             <Hero />
           </motion.aside>
+          <Chatbot />
           
           <main className="w-full lg:w-2/3 space-y-6">
             <section id="about">
