@@ -1,10 +1,10 @@
 {
-  "name": "kalamkunja",
+  "name": "portfolio-utsab",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm install --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint"
   },
