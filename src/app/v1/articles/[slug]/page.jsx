@@ -21,7 +21,9 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const res = await fetch(`/api/v1/articles/${slug}`, { cache: "no-store" });
+        const res = await fetch(`/api/v1/articles/${slug}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         if (data.success) {
           setArticle(data.article);
@@ -90,16 +92,26 @@ export default function ArticleDetailPage() {
 
           {/* Breadcrumb */}
           <nav className="flex flex-wrap items-center text-sm text-[#7d8590] mb-6 gap-1">
-            <Link href="/" className="hover:text-[#2f81f7] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#2f81f7] transition-colors">
+              Home
+            </Link>
             <span>/</span>
-            <Link href="/v1/articles" className="hover:text-[#2f81f7] transition-colors">Articles</Link>
+            <Link
+              href="/v1/articles"
+              className="hover:text-[#2f81f7] transition-colors"
+            >
+              Articles
+            </Link>
             <span>/</span>
-            <span className="text-[#f0f6fc] font-medium">{article.category}</span>
+            <span className="text-[#f0f6fc] font-medium">
+              {article.category}
+            </span>
           </nav>
 
-          {/* Article Header */}
           <header className="mb-8">
-            <h1 className="text-xl md:text-2xl font-semibold text-[#f0f6fc] mb-4 leading-tight">{article.title}</h1>
+            <h1 className="text-xl md:text-2xl font-semibold text-[#f0f6fc] mb-4 leading-tight">
+              {article.title}
+            </h1>
             <div className="flex flex-wrap items-center gap-3 text-[#7d8590] text-xs md:text-sm">
               <div className="flex items-center gap-1">
                 <FiUser size={12} /> {article.author || "Utsab Adhikari"}
@@ -109,7 +121,12 @@ export default function ArticleDetailPage() {
               </div>
               <div className="flex items-center gap-1">
                 <FiFolder size={12} />
-                <Link href={`/category/${article.category.toLowerCase()}`} className="hover:text-[#2f81f7]">{article.category}</Link>
+                <Link
+                  href={`/category/${article.category.toLowerCase()}`}
+                  className="hover:text-[#2f81f7]"
+                >
+                  {article.category}
+                </Link>
               </div>
               <div className="flex items-center gap-1">
                 <FiEye size={12} /> {article.views?.length || 0} views
@@ -149,19 +166,25 @@ export default function ArticleDetailPage() {
                 {[
                   {
                     icon: FaFacebook,
-                    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-                    label: "Share on Facebook"
+                    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                      window.location.href
+                    )}`,
+                    label: "Share on Facebook",
                   },
                   {
                     icon: FaTwitter,
-                    url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article.title)}`,
-                    label: "Share on Twitter"
+                    url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                      window.location.href
+                    )}&text=${encodeURIComponent(article.title)}`,
+                    label: "Share on Twitter",
                   },
                   {
                     icon: FaLinkedin,
-                    url: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(article.title)}`,
-                    label: "Share on LinkedIn"
-                  }
+                    url: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(
+                      window.location.href
+                    )}&title=${encodeURIComponent(article.title)}`,
+                    label: "Share on LinkedIn",
+                  },
                 ].map(({ icon: Icon, url, label }, idx) => (
                   <a
                     key={idx}
@@ -179,25 +202,33 @@ export default function ArticleDetailPage() {
 
             {/* Right: Related Articles */}
             <aside className="lg:w-72 flex-shrink-0">
-              <h2 className="text-md font-semibold text-[#f0f6fc] mb-3">Related Articles</h2>
+              <h2 className="text-md font-semibold text-[#f0f6fc] mb-3">
+                Related Articles
+              </h2>
               <div className="space-y-3">
-                {related.length > 0 ? related.map(rel => (
-                  <Link
-                    key={rel._id}
-                    href={`/v1/article/${rel.slug}`}
-                    className="block bg-[#161b22] hover:bg-[#21262d] p-3 rounded-md transition-colors border border-[#30363d]"
-                  >
-                    {rel.featuredImage && (
-                      <img
-                        src={rel.featuredImage}
-                        alt={rel.title}
-                        className="w-full h-32 object-cover rounded mb-3 border border-[#30363d]"
-                      />
-                    )}
-                    <h3 className="text-sm font-medium text-[#f0f6fc] line-clamp-2">{rel.title}</h3>
-                  </Link>
-                )) : (
-                  <p className="text-[#7d8590] text-sm">No related articles found.</p>
+                {related.length > 0 ? (
+                  related.map((rel) => (
+                    <Link
+                      key={rel._id}
+                      href={`/v1/article/${rel.slug}`}
+                      className="block bg-[#161b22] hover:bg-[#21262d] p-3 rounded-md transition-colors border border-[#30363d]"
+                    >
+                      {rel.featuredImage && (
+                        <img
+                          src={rel.featuredImage}
+                          alt={rel.title}
+                          className="w-full h-32 object-cover rounded mb-3 border border-[#30363d]"
+                        />
+                      )}
+                      <h3 className="text-sm font-medium text-[#f0f6fc] line-clamp-2">
+                        {rel.title}
+                      </h3>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-[#7d8590] text-sm">
+                    No related articles found.
+                  </p>
                 )}
               </div>
             </aside>

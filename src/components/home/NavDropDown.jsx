@@ -19,6 +19,7 @@ import {
   FaRProject,
   FaCode,
   FaSave,
+  FaClock,
 } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -88,6 +89,11 @@ export default function NavDropdown() {
       id: "/tracker",
       label: "Tracker",
       icon: <FaTasks className="w-4 h-4" />,
+    },
+    {
+      id: "/schedules",
+      label: "Schedules",
+      icon: <FaClock className="w-4 h-4" />,
     },
     {
       id: "/hireme/application/management",
