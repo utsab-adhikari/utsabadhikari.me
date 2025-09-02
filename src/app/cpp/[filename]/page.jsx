@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FiCopy, FiPlay, FiClock, FiArrowLeft, FiEdit } from "react-icons/fi";
@@ -14,8 +14,12 @@ export default function CppFileView() {
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // Set to true for admin, adjust according to session
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  const editorRef = useRef(null);
+  const [editorHeight, setEditorHeight] = useState(100);
+
+  // Fetch file data
   useEffect(() => {
     fetch(`/api/cpp/${filename}`)
       .then((res) => res.json())
@@ -25,14 +29,16 @@ export default function CppFileView() {
       });
 
     setIsAdmin(session?.user?.role === "admin");
-  }, [filename]);
+  }, [filename, session]);
 
+  // Copy code
   const copyCode = () => {
     navigator.clipboard.writeText(file.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Run code
   const runCode = async () => {
     setRunning(true);
     setOutput("Running code...");
@@ -49,6 +55,21 @@ export default function CppFileView() {
     } finally {
       setRunning(false);
     }
+  };
+
+  // Monaco editor mount: auto-adjust height
+  const handleEditorMount = (editor, monaco) => {
+    editorRef.current = editor;
+
+    const updateHeight = () => {
+      const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
+      const lineCount = editor.getModel().getLineCount();
+      const height = lineHeight * lineCount + 20; // padding
+      setEditorHeight(height);
+    };
+
+    updateHeight(); // initial
+    editor.onDidChangeModelContent(updateHeight); // update on content change
   };
 
   if (loading)
@@ -86,9 +107,7 @@ export default function CppFileView() {
 
         <div className="bg-[#161b22] border border-[#30363d] rounded-md overflow-hidden mb-6">
           <div className="border-b border-[#30363d] px-4 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-            <h1 className="text-xl font-bold text-[#f0f6fc]">
-              {file.filename}
-            </h1>
+            <h1 className="text-xl font-bold text-[#f0f6fc]">{file.filename}</h1>
             <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
               {isAdmin && (
                 <Link
@@ -129,14 +148,12 @@ export default function CppFileView() {
             )}
 
             <div>
-              <label className="block text-sm mb-2 text-[#f0f6fc]">
-                Program
-              </label>
+              <label className="block text-sm mb-2 text-[#f0f6fc]">Program</label>
               <Editor
-                className="min-h-[200px]"
                 defaultLanguage="cpp"
                 theme="vs-dark"
                 value={file.code}
+                onMount={handleEditorMount}
                 options={{
                   readOnly: true,
                   overviewRulerBorder: false,
@@ -144,7 +161,9 @@ export default function CppFileView() {
                   minimap: { enabled: false },
                   fontSize: 14,
                   automaticLayout: true,
+                  scrollBeyondLastLine: false,
                 }}
+                height={editorHeight}
               />
             </div>
 
@@ -169,8 +188,7 @@ export default function CppFileView() {
 
       {/* Footer */}
       <footer className="border-t border-[#30363d] p-4 mt-6 text-center text-[#8b949e] text-sm">
-        Created by Utsab • C++ Code Manager • Built with Next.js, MongoDB,
-        Tailwind CSS
+        Created by Utsab • C++ Code Manager • Built with Next.js, MongoDB, Tailwind CSS
       </footer>
     </div>
   );
