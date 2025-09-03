@@ -8,18 +8,22 @@ export const metadata = {
   title: "Utsab Adhikari | Portfolio",
   description: "Professional portfolio of Utsab Adhikari.",
   openGraph: {
-    title: "Utsab Adhikari | Portfolio",
-    description: "Professional portfolio of Utsab Adhikari.",
+    type: "website", // <- og:type
     url: "https://utsabadhikari.me",
     siteName: "Utsab Adhikari",
+    title: "Utsab Adhikari | Portfolio",
+    description: "Professional portfolio of Utsab Adhikari.",
     images: [
       {
-        url: "https://utsabadhikari.me/og-image.webp", // full URL to your image
+        url: "https://utsabadhikari.me/og-image.webp",
         width: 1200,
         height: 630,
         alt: "Utsab Adhikari Portfolio Preview",
       },
     ],
+  },
+  facebook: {
+    appId: "YOUR_APP_ID",
   },
   twitter: {
     card: "summary_large_image",
@@ -28,7 +32,6 @@ export const metadata = {
     images: ["https://utsabadhikari.me/og-image.webp"],
   },
 };
-
 
 export default function RootLayout({ children }) {
   return (
