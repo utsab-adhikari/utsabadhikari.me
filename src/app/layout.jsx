@@ -1,37 +1,34 @@
 import ProvidersWrapper from "@/components/ProvidersWraper";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { FaUser } from "react-icons/fa";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Utsab Adhikari | Portfolio",
-  description:
-    "Discover the professional portfolio of Utsab Adhikari — a passionate IT engineering student showcasing projects, skills, and achievements in a modern 3-section scroll-snapping layout.",
   metadataBase: new URL("https://utsabadhikari.me"),
+  title: "Utsab Adhikari | Portfolio",
+  description: "Professional portfolio of Utsab Adhikari.",
   openGraph: {
     title: "Utsab Adhikari | Portfolio",
-    description:
-      "Explore the professional portfolio of Utsab Adhikari, featuring projects, skills, and achievements.",
+    description: "Professional portfolio of Utsab Adhikari.",
     url: "https://utsabadhikari.me",
     siteName: "Utsab Adhikari",
     images: [
       {
-        // Normally you would provide a static image URL here
-        url: "/og-image.png",
+        url: "https://utsabadhikari.me/og-image.webp", // full URL to your image
         width: 1200,
         height: 630,
-        alt: "Utsab Adhikari - Portfolio",
+        alt: "Utsab Adhikari Portfolio Preview",
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
-  icons: {
-    icon: <FaUser />, // This works for components/icons usage within the app
+  twitter: {
+    card: "summary_large_image",
+    title: "Utsab Adhikari | Portfolio",
+    description: "Professional portfolio of Utsab Adhikari.",
+    images: ["https://utsabadhikari.me/og-image.webp"],
   },
 };
+
 
 export default function RootLayout({ children }) {
   return (
