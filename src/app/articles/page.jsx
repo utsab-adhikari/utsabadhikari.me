@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Footer from "@/components/home/Footer";
 import Loader from "@/components/Loader";
 
-export default function ArticlesPage({ setActiveSection }) {
+export default function ArticlesPage() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,21 +33,17 @@ export default function ArticlesPage({ setActiveSection }) {
     fetchArticles();
   }, []);
 
-  // Extract unique categories
   const categories = [
     "all",
     ...new Set(articles.map((article) => article.category).filter(Boolean)),
   ];
 
-  // Filter articles by category
   const filteredArticles =
     selectedCategory === "all"
       ? articles
       : articles.filter((article) => article.category === selectedCategory);
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading) return <Loader />;
 
   if (error) {
     return (
@@ -127,7 +123,6 @@ function ArticleCard({ article, index }) {
       })
     : "Unknown date";
 
-  // Calculate reading time (assuming 200 words per minute)
   const wordCount = article.content ? article.content.split(/\s+/).length : 0;
   const readingTime = Math.ceil(wordCount / 200);
 
@@ -136,55 +131,37 @@ function ArticleCard({ article, index }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
-      className="bg-[#161b22] rounded-md overflow-hidden hover:border-[#3fb950] transition-all duration-200 border border-[#30363d]"
+      className="p-4 bg-[#161b22] rounded-md border border-[#30363d] hover:border-[#3fb950] transition-colors"
     >
-      {article.featuredImage && (
-        <div className="relative h-40 w-full">
-          <img
-            src={article.featuredImage}
-            alt={article.title}
-            className="object-cover w-full h-full"
-          />
-          {article.category && (
-            <div className="absolute top-3 left-3">
-              <span className="px-2 py-1 bg-[#1f6feb] text-[#f0f6fc] rounded text-xs font-medium">
-                {article.category}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-      <div className="p-4">
-        <h3 className="text-md font-medium text-[#f0f6fc] mb-2 hover:text-[#2f81f7] transition-colors">
-          <Link href={`/v1/articles/${article.slug}`}>{article.title}</Link>
-        </h3>
+      <h3 className="text-lg font-medium text-[#f0f6fc] mb-2 hover:text-[#2f81f7] transition-colors">
+        <Link href={`/v1/articles/${article.slug}`}>{article.title}</Link>
+      </h3>
 
-        <p className="text-[#7d8590] text-sm mb-3">{excerpt}</p>
+      <p className="text-[#7d8590] text-sm mb-3">{excerpt}</p>
 
-        <div className="flex items-center justify-between text-xs text-[#7d8590]">
+      <div className="flex items-center justify-between text-xs text-[#7d8590]">
+        <div className="flex items-center space-x-3">
           <div className="flex items-center">
             <Calendar size={12} className="mr-1" />
             <span>{date}</span>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center">
-              <Eye size={12} className="mr-1" />
-              <span>{viewCount}</span>
-            </div>
+          <div className="flex items-center">
+            <Eye size={12} className="mr-1" />
+            <span>{viewCount}</span>
+          </div>
 
-            <div className="flex items-center">
-              <Clock size={12} className="mr-1" />
-              <span>{readingTime}m</span>
-            </div>
+          <div className="flex items-center">
+            <Clock size={12} className="mr-1" />
+            <span>{readingTime} min read</span>
           </div>
         </div>
 
         <Link
           href={`/v1/articles/${article.slug}`}
-          className="mt-3 inline-block px-3 py-1.5 bg-[#21262d] text-[#f0f6fc] rounded text-xs font-medium hover:bg-[#30363d] transition-colors border border-[#30363d]"
+          className="text-[#2f81f7] hover:underline text-xs"
         >
-          Read Article
+          Read →
         </Link>
       </div>
     </motion.div>
