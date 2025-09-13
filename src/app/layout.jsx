@@ -6,13 +6,13 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   metadataBase: new URL("https://utsabadhikari.me"),
   title: "Utsab Adhikari | Portfolio",
-  description: "Professional portfolio of Utsab Adhikari.",
+  description: "Backend Developer | NextJs | MERN",
   openGraph: {
     type: "website", // <- og:type
     url: "https://utsabadhikari.me",
     siteName: "Utsab Adhikari",
     title: "Utsab Adhikari | Portfolio",
-    description: "Professional portfolio of Utsab Adhikari.",
+    description: "Backend Developer | NextJs | MERN",
     images: [
       {
         url: "https://utsabadhikari.me/og-image.webp",
@@ -28,7 +28,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Utsab Adhikari | Portfolio",
-    description: "Professional portfolio of Utsab Adhikari.",
+    description: "Backend Developer | NextJs | MERN",
     images: ["https://utsabadhikari.me/og-image.webp"],
   },
 };
